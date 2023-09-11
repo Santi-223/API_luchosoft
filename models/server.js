@@ -10,7 +10,7 @@ class Server{
         this.app = express()
         this.port = process.env.PORT //Capturando variable puerto
         this.insumoPath = '/api/insumos' //Ruta pública insumos
-        this.proveedorPath = '/api/proveedores' //Ruta pública proveedores
+        this.clientePath = '/api/clientes' //Ruta pública proveedores
         this.middlewares();
         this.conectarDB()
         this.routes()
@@ -31,7 +31,7 @@ class Server{
 
     routes(){
         this.app.use(this.insumoPath, require('../routes/insumos'))
-        this.app.use(this.proveedorPath, require('../routes/proveedores.js'))
+        this.app.use(this.clientePath, require('../routes/clientes.js'))
     }
     
 

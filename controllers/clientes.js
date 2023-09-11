@@ -2,26 +2,26 @@ const {response} = require('express')
 
 
 //Importación de los modelos
-const Proveedor = require('../models/proveedores')
+const Cliente = require('../models/clientes')
 
 //Método GET de la API
-const proveedorGet = async(req, res = response) =>{
+const clienteGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
 
     //Consultar todos los usuarios
-    const proveedor = await Proveedor.find()
+    const cliente = await Cliente.find()
 
     res.json({  //Respuesta en JSON
-        proveedor
+        cliente
     })   
 }
 
-const proveedorPost = async(req, res) => {
+const clientePost = async(req, res) => {
     let mensaje = "Inserción exitosa"
     const body = req.body
     try {
-        const proveedor= new Proveedor(body)
-        await proveedor.save() //Inserta en la colección
+        const cliente= new Cliente(body)
+        await cliente.save() //Inserta en la colección
     }catch (error) {
         mensaje = error
         console.log(error)
@@ -31,18 +31,19 @@ const proveedorPost = async(req, res) => {
     })
 }
 
-const proveedorPut = async(req, res) => {
+const clientePut = async(req, res) => {
 
-    const {_id, nombre_proveedor, telefono_proveedor, direccion_proveedor, estado_proveedor} = req.body
+    const {_id, nombre_cliente, telefono_cliente, direccion_cliente, cliente_frecuente, estado_cliente} = req.body
 
     let mensaje = "Modificación exitosa"
 
     try {
-        await Proveedor.updateMany({_id: _id}, {$set: {
-            nombre_proveedor: nombre_proveedor,
-            telefono_proveedor: telefono_proveedor,
-            direccion_proveedor: direccion_proveedor,
-            estado_proveedor: estado_proveedor
+        await Cliente.updateMany({_id: _id}, {$set: {
+            nombre_cliente: nombre_cliente,
+            telefono_cliente: telefono_cliente,
+            direccion_cliente: direccion_cliente,
+            cliente_frecuente: cliente_frecuente,
+            estado_cliente: estado_cliente
         }});
 
     }catch (error) {
@@ -53,12 +54,12 @@ const proveedorPut = async(req, res) => {
     })
 }
 
-const proveedorDelete = async (req, res) => {
+const clienteDelete = async (req, res) => {
     const {_id} = req.body
     let mensaje = ''
 
     try{
-        const proveedor = await Proveedor.deleteOne({_id: _id})
+        const cliente = await Cliente.deleteOne({_id: _id})
         mensaje = 'La eliminación se efectuó exitosamente'
     }
     catch(error){
@@ -71,8 +72,8 @@ const proveedorDelete = async (req, res) => {
 }
 
 module.exports = {
-    proveedorGet,
-    proveedorPost,
-    proveedorPut,
-    proveedorDelete
+    clienteGet,
+    clientePost,
+    clientePut,
+    clienteDelete
 }
