@@ -7,13 +7,24 @@ const Cliente = require('../models/clientes')
 //Método GET de la API
 const clienteGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
-
+    const {_id} = req.query;
     //Consultar todos los usuarios
-    const cliente = await Cliente.find()
+    try {
+        let cliente;
 
-    res.json({  //Respuesta en JSON
-        cliente
-    })   
+        if (_id) {
+            // Si se proporciona un id, realizar una búsqueda por nombre
+            cliente = await Cliente.find({ _id: _id });
+        } else {
+            // Si no se proporciona un id, consultar todos los clientes
+            cliente = await Cliente.find();
+        }
+
+        res.json({ cliente });
+    } catch (error) {
+        console.error('Error al buscar clientes:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
 }
 
 const clientePost = async(req, res) => {
