@@ -1,19 +1,27 @@
-const {response} = require('express')
-
-
 //Importación de los modelos
 const Insumo = require('../models/insumos')
 
 //Método GET de la API
 const insumoGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
-
+    const {_id} = req.query;
     //Consultar todos los usuarios
-    const insumo = await Insumo.find()
+    try {
+        let insumo;
 
-    res.json({  //Respuesta en JSON
-        insumo
-    })   
+        if (_id) {
+            // Si se proporciona un id, realizar una búsqueda por nombre
+            insumo = await Insumo.find({ _id: _id });
+        } else {
+            // Si no se proporciona un id, consultar todos los clientes
+            insumo = await Insumo.find();
+        }
+
+        res.json({ insumo });
+    } catch (error) {
+        console.error('Error al buscar clientes:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
 }
 
 const insumoPost = async(req, res) => {
