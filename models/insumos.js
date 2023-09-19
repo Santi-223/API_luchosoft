@@ -39,4 +39,4 @@ const UsuarioSchema = Schema({
 })
 
 //Exportar la función UsuarioSchema
-module.exports = model('insumos',UsuarioSchema)
+module.exports = model('insumosNuevos',UsuarioSchema)
