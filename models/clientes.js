@@ -2,6 +2,12 @@ const {Schema, model} = require('mongoose')
 
 const UsuarioSchema = Schema({
 
+    id_cliente: {
+        type: Number,
+        unique: true,
+        required: [true, 'El id del cliente es obligatorio']
+    },
+
     nombre_cliente: {
         type: String,
         required: [true, 'El nombre del cliente es obligatorio']
@@ -30,4 +36,4 @@ const UsuarioSchema = Schema({
 })
 
 //Exportar la función UsuarioSchema
-module.exports = model('clientes',UsuarioSchema)
+module.exports = model('clientesNuevos',UsuarioSchema)

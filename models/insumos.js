@@ -2,6 +2,12 @@ const {Schema, model} = require('mongoose')
 
 const UsuarioSchema = Schema({
 
+    id_insumo: {
+        type: Number,
+        unique: true,
+        required: [true, 'El id del insumo es obligatorio']
+    },
+
     imagen_insumo: {
         type: String
     },

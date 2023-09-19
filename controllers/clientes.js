@@ -7,14 +7,14 @@ const Cliente = require('../models/clientes')
 //Método GET de la API
 const clienteGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
-    const {_id} = req.query;
+    const {id_cliente} = req.query;
     //Consultar todos los usuarios
     try {
         let cliente;
 
-        if (_id) {
+        if (id_cliente) {
             // Si se proporciona un id, realizar una búsqueda por nombre
-            cliente = await Cliente.find({ _id: _id });
+            cliente = await Cliente.find({ id_cliente: id_cliente });
         } else {
             // Si no se proporciona un id, consultar todos los clientes
             cliente = await Cliente.find();
@@ -34,7 +34,7 @@ const clientePost = async(req, res) => {
         const cliente= new Cliente(body)
         await cliente.save() //Inserta en la colección
     }catch (error) {
-        mensaje = error
+        mensaje = "Se presentaron problemas en la inserción"
         console.log(error)
     }
     res.json({
@@ -44,12 +44,12 @@ const clientePost = async(req, res) => {
 
 const clientePut = async(req, res) => {
 
-    const {_id, nombre_cliente, telefono_cliente, direccion_cliente, cliente_frecuente, estado_cliente} = req.body
+    const {id_cliente, nombre_cliente, telefono_cliente, direccion_cliente, cliente_frecuente, estado_cliente} = req.body
 
     let mensaje = "Modificación exitosa"
 
     try {
-        await Cliente.updateMany({_id: _id}, {$set: {
+        await Cliente.updateMany({id_cliente: id_cliente}, {$set: {
             nombre_cliente: nombre_cliente,
             telefono_cliente: telefono_cliente,
             direccion_cliente: direccion_cliente,
@@ -66,11 +66,11 @@ const clientePut = async(req, res) => {
 }
 
 const clienteDelete = async (req, res) => {
-    const {_id} = req.body
+    const {id_cliente} = req.body
     let mensaje = ''
 
     try{
-        const cliente = await Cliente.deleteOne({_id: _id})
+        const cliente = await Cliente.deleteOne({id_cliente: id_cliente})
         mensaje = 'La eliminación se efectuó exitosamente'
     }
     catch(error){

@@ -4,14 +4,14 @@ const Insumo = require('../models/insumos')
 //Método GET de la API
 const insumoGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
-    const {_id} = req.query;
+    const {id_insumo} = req.query;
     //Consultar todos los usuarios
     try {
         let insumo;
 
-        if (_id) {
+        if (id_insumo) {
             // Si se proporciona un id, realizar una búsqueda por nombre
-            insumo = await Insumo.find({ _id: _id });
+            insumo = await Insumo.find({ id_insumo: id_insumo });
         } else {
             // Si no se proporciona un id, consultar todos los clientes
             insumo = await Insumo.find();
@@ -31,7 +31,7 @@ const insumoPost = async(req, res) => {
         const insumo= new Insumo(body)
         await insumo.save() //Inserta en la colección
     }catch (error) {
-        mensaje = error
+        mensaje = "Se presentaron problemas en la inserción"
         console.log(error)
     }
     res.json({
@@ -41,12 +41,12 @@ const insumoPost = async(req, res) => {
 
 const insumoPut = async(req, res) => {
 
-    const {_id, imagen_insumo, nombre_insumo, tipo_stock_insumo, stock_insumo, estado_insumo, categoria_insumo} = req.body
+    const {id_insumo, imagen_insumo, nombre_insumo, tipo_stock_insumo, stock_insumo, estado_insumo, categoria_insumo} = req.body
 
     let mensaje = "Modificación exitosa"
 
     try {
-        await Insumo.updateMany({_id: _id}, {$set: {
+        await Insumo.updateMany({id_insumo: id_insumo}, {$set: {
             imagen_insumo: imagen_insumo,
             nombre_insumo: nombre_insumo,
             tipo_stock_insumo: tipo_stock_insumo,
@@ -64,11 +64,11 @@ const insumoPut = async(req, res) => {
 }
 
 const insumoDelete = async (req, res) => {
-    const {_id} = req.body
+    const {id_insumo} = req.body
     let mensaje = ''
 
     try{
-        const insumo = await Insumo.deleteOne({_id: _id})
+        const insumo = await Insumo.deleteOne({id_insumo: id_insumo})
         mensaje = 'La eliminación se efectuó exitosamente'
     }
     catch(error){
