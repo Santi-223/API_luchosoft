@@ -64,7 +64,7 @@ const insumoPut = async(req, res) => {
 }
 
 const insumoDelete = async (req, res) => {
-    const {id_insumo} = req.body
+    const {id_insumo} = req.query
     let mensaje = ''
 
     try{

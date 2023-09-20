@@ -66,7 +66,7 @@ const clientePut = async(req, res) => {
 }
 
 const clienteDelete = async (req, res) => {
-    const {id_cliente} = req.body
+    const {id_cliente} = req.query
     let mensaje = ''
 
     try{
