@@ -4,7 +4,7 @@ const Insumo = require('../models/insumos')
 //Método GET de la API
 const insumoGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
-    const {id_insumo} = req.query;
+    const {id_insumo} = req.body;
     //Consultar todos los usuarios
     try {
         let insumo;

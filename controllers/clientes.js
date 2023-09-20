@@ -7,7 +7,7 @@ const Cliente = require('../models/clientes')
 //Método GET de la API
 const clienteGet = async(req, res = response) =>{
     //const {nombre} = req.query //Desestructuración
-    const {id_cliente} = req.query;
+    const {id_cliente} = req.body;
     //Consultar todos los usuarios
     try {
         let cliente;
