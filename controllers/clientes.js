@@ -1,63 +1,78 @@
-const {response} = require('express')
-
+const { response } = require('express')
+const { generarJWT } = require('../helpers/generar_jwt')
+const jwt = require('jsonwebtoken');
 
 //Importación de los modelos
 const Cliente = require('../models/clientes')
 
-//Método GET de la API
-const clienteGet = async(req, res = response) =>{
-    //const {nombre} = req.query //Desestructuración
-    const {id_cliente} = req.query;
-    //Consultar todos los usuarios
+const clienteGet = async (req, res = response) => {
+    const { id_cliente } = req.query;
+
     try {
         let cliente;
 
         if (id_cliente) {
-            // Si se proporciona un id, realizar una búsqueda por nombre
             cliente = await Cliente.find({ id_cliente: id_cliente });
         } else {
-            // Si no se proporciona un id, consultar todos los clientes
             cliente = await Cliente.find();
         }
 
         res.json({ cliente });
+
+
     } catch (error) {
         console.error('Error al buscar clientes:', error);
         res.status(500).json({ mensaje: 'Error interno del servidor' });
     }
 }
 
-const clientePost = async(req, res) => {
+
+const clientePost = async (req, res) => {
     let mensaje = "Inserción exitosa"
+
+    let token = "";
+
+    const { id_cliente } = req.body
+
     const body = req.body
     try {
-        const cliente= new Cliente(body)
+        const cliente = new Cliente(body)
         await cliente.save() //Inserta en la colección
-    }catch (error) {
+
+        if(id_cliente != ""){
+            token = await generarJWT(id_cliente);
+            res.cookie('token',token);//creando la cookie
+
+            mensaje += (', el token es: '+token)
+        }
+    } catch (error) {
         mensaje = "Se presentaron problemas en la inserción"
         console.log(error)
     }
     res.json({
         msg: mensaje
     })
+
 }
 
-const clientePut = async(req, res) => {
+const clientePut = async (req, res) => {
 
-    const {id_cliente, nombre_cliente, telefono_cliente, direccion_cliente, cliente_frecuente, estado_cliente} = req.body
+    const { id_cliente, nombre_cliente, telefono_cliente, direccion_cliente, cliente_frecuente, estado_cliente } = req.body
 
     let mensaje = "Modificación exitosa"
 
     try {
-        await Cliente.updateMany({id_cliente: id_cliente}, {$set: {
-            nombre_cliente: nombre_cliente,
-            telefono_cliente: telefono_cliente,
-            direccion_cliente: direccion_cliente,
-            cliente_frecuente: cliente_frecuente,
-            estado_cliente: estado_cliente
-        }});
+        await Cliente.updateMany({ id_cliente: id_cliente }, {
+            $set: {
+                nombre_cliente: nombre_cliente,
+                telefono_cliente: telefono_cliente,
+                direccion_cliente: direccion_cliente,
+                cliente_frecuente: cliente_frecuente,
+                estado_cliente: estado_cliente
+            }
+        });
 
-    }catch (error) {
+    } catch (error) {
         mensaje = "Se presentaron problemas en la modificación."
     }
     res.json({
@@ -66,14 +81,14 @@ const clientePut = async(req, res) => {
 }
 
 const clienteDelete = async (req, res) => {
-    const {id_cliente} = req.query
+    const { id_cliente } = req.query
     let mensaje = ''
 
-    try{
-        const cliente = await Cliente.deleteOne({id_cliente: id_cliente})
+    try {
+        const cliente = await Cliente.deleteOne({ id_cliente: id_cliente })
         mensaje = 'La eliminación se efectuó exitosamente'
     }
-    catch(error){
+    catch (error) {
         mensaje = 'Se presentaron problemas en la eliminación'
     }
 
