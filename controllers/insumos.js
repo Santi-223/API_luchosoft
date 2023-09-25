@@ -11,26 +11,16 @@ const insumoGet = async(req, res = response) =>{
     try {
         let insumo;
 
-        let token;
-
         if (id_insumo) {
             // Si se proporciona un id, realizar una búsqueda por nombre
             insumo = await Insumo.find({ id_insumo: id_insumo });
 
-            if(insumo != ""){
-                token = await generarJWT(insumo.id_insumo);
-                res.cookie('token',token);//creando la cookie
-            }
         } else {
             // Si no se proporciona un id, consultar todos los clientes
             insumo = await Insumo.find();
         }
 
-        if (token==""){
-            res.json({ insumo }); // Enviar tanto el cliente como el token en la misma respuesta JSON
-        }else{
-            res.json({ insumo, token }); // Enviar tanto el cliente como el token en la misma respuesta JSON
-        }
+        res.json({ insumo });
     } catch (error) {
         console.error('Error al buscar clientes:', error);
         res.status(500).json({ mensaje: 'Error interno del servidor' });
